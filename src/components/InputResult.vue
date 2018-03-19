@@ -1,14 +1,14 @@
 <template>
   <div class="input container">
     <h1>Lisää ottelu</h1>
-    <div class="row">
-      <v-select-team v-model="home" v-bind:teams.sync="homeTeams" />
+    <div class="teams row">
+      <v-select v-model="home" v-bind:teams.sync="homeTeams" />
        vs.
-      <v-select-team v-model="away" v-bind:teams.sync="awayTeams" />
+      <v-select v-model="away" v-bind:teams.sync="awayTeams" />
     </div>
-    <div class="row">
-      <h2>data testi</h2>
-      {{home}} vs {{away}}
+    <div class="result row">
+      Lisää maali:
+      <button>Koti</button><button>Vieras</button>
     </div>
   </div>
 </template>
@@ -21,10 +21,11 @@ import * as data from '../assets/teams.json'
 export default {
   name: 'InputResult',
   components: {
-    'v-select-team': SelectTeam
+    'v-select': SelectTeam
   },
   data () {
     return {
+      teams: [],
       homeTeams: [],
       awayTeams: [],
       home: '',
@@ -32,20 +33,21 @@ export default {
     }
   },
   beforeMount () {
-    this.homeTeams = [...data.teams].sort()
-    this.awayTeams = [...data.teams].sort()
+    this.teams = Object.keys(data).map(key => key).sort()
+    this.homeTeams = [...this.teams]
+    this.awayTeams = [...this.teams]
   },
   beforeUpdate () {
     if (this.awayTeams.includes(this.home)) {
-      this.awayTeams = this.sortAndFilter([...data.teams], this.home)
+      this.awayTeams = this.sortAndFilter(this.teams, this.home)
     }
     if (this.homeTeams.includes(this.away)) {
-      this.homeTeams = this.sortAndFilter([...data.teams], this.away)
+      this.homeTeams = this.sortAndFilter(this.teams, this.away)
     }
   },
   methods: {
     sortAndFilter (arr, val) {
-      return arr.sort().filter(o => {
+      return arr.filter(o => {
         return o !== val
       })
     }
