@@ -1,9 +1,9 @@
 <template>
   <select v-bind:value="value"
           @change="$emit('input', $event.target.value)">
-    <option disabled value="">Valitse joukkue</option>
-    <option v-for="team in teams" v-bind:value="team" v-bind:key="team">
-      {{ team }}
+    <option disabled value="">{{ disabled }}</option>
+    <option v-for="o in options" v-bind:value="o" v-bind:key="o">
+      {{ o }}
     </option>
   </select>
 </template>
@@ -16,8 +16,12 @@ export default {
         return ''
       }
     },
-    'teams': {
+    'options': {
       type: Array,
+      required: true
+    },
+    'disabled': {
+      type: String,
       required: true
     }
   }
