@@ -1,27 +1,30 @@
 <template>
   <div class="input container">
     <h1>Lisää ottelu</h1>
+    <div class="result row">
+      {{ result.home.score }} - {{ result.away.score }}
+    </div>
     <div class="teams row">
-      <v-select v-model="home" v-bind:options.sync="homeTeams" disabled="Valitse joukkue" />
+      <v-select v-model="result.home.name" v-bind:options.sync="homeTeams" disabled="Valitse joukkue" />
        vs.
-      <v-select v-model="away" v-bind:options.sync="awayTeams" disabled="Valitse joukkue" />
+      <v-select v-model="result.away.name" v-bind:options.sync="awayTeams" disabled="Valitse joukkue" />
     </div>
     <br>
-    <div class="result row" v-if="home && away">
+    <div class="result row" v-if="result.home.name && result.away.name">
       Lisää maali:<br>
       Joukkue:
       <select v-model="teamScored" v-on:change="updatePlayers()">
         <option value="" disabled>Joukkue</option>
-        <option>{{home}}</option>
-        <option>{{away}}</option>
+        <option>{{result.home.name}}</option>
+        <option>{{result.away.name}}</option>
       </select>
       <v-select v-model="playerScored" v-bind:options.sync="players" disabled="Maalintekijä" v-if="players"/>
-      <button v-on:click="goal()">Lisää maali</button>
+      <button v-on:click="goal()" v-if="playerScored && teamScored">Lisää maali</button>
 
       <div>
-        <p v-for="goal in goals" v-bind:key="goal.player">
-          {{ goal.player }} {{ goal.team }}
-        </p>
+        <div v-for="goal in result.goals" v-bind:key="goal.id">
+          {{ goal.player }} [{{ goal.team }}]
+        </div>
       </div>
     </div>
   </div>
@@ -45,9 +48,17 @@ export default {
       homeTeams: [],
       awayTeams: [],
       players: null,
-      goals: [],
-      home: '',
-      away: '',
+      result: {
+        home: {
+          name: '',
+          score: 0
+        },
+        away: {
+          name: '',
+          score: 0
+        },
+        goals: []
+      },
       teamScored: '',
       playerScored: ''
     }
@@ -58,11 +69,13 @@ export default {
     this.awayTeams = [...this.teams]
   },
   beforeUpdate () {
-    if (this.awayTeams.includes(this.home)) {
-      this.awayTeams = this.sortAndFilter(this.teams, this.home)
+    const home = this.result.home.name
+    const away = this.result.away.name
+    if (this.awayTeams.includes(home)) {
+      this.awayTeams = this.sortAndFilter(this.teams, home)
     }
-    if (this.homeTeams.includes(this.away)) {
-      this.homeTeams = this.sortAndFilter(this.teams, this.away)
+    if (this.homeTeams.includes(away)) {
+      this.homeTeams = this.sortAndFilter(this.teams, away)
     }
   },
   methods: {
@@ -75,7 +88,16 @@ export default {
       this.players = data[this.teamScored]
     },
     goal () {
-      this.goals.push({score: { home: 0, away: 0 }, team: this.teamScored, player: this.playerScored})
+      if (this.teamScored === this.result.home.name) {
+        this.result.home.score++
+      } else if (this.teamScored === this.result.away.name) {
+        this.result.away.score++
+      }
+      const id = this.result.home.score + this.result.away.score
+      this.result.goals.push({id: id, team: this.teamScored, player: this.playerScored})
+
+      this.playerScored = ''
+      this.teamScored = ''
     }
   }
 }
