@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import InputResult from '@/components/InputResult'
+import MainView from '@/components/MainView'
 
 Vue.use(Router)
 
@@ -8,8 +8,9 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'InputResult',
-      component: InputResult
+      name: 'MainView',
+      component: MainView,
+      props: (route) => ({ query: { team: route.query.team, place: route.query.place } })
     }
   ]
 })
