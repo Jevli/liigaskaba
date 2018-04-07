@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="events" v-if="game.events" v-for="event in game.events" v-bind:key="event.id">
-      {{event.team}} {{event.player}} ajassa {{event.time}}"
+      {{event.team}} {{event.player}} <img src="/static/soccer-ball_26bd.png"/> {{event.time}} <img src="/static/clock.png" />
     </div>
     <div class="input">
       <input class="time" type="number" v-model="event.time" min="0">
@@ -19,6 +19,10 @@
 
 <script>
 import uuidv4 from 'uuid/v4'
+
+console.log(uuidv4())
+console.log(uuidv4())
+console.log(uuidv4())
 
 export default {
   name: 'InputResult',
@@ -53,7 +57,7 @@ export default {
       this.game.result = this.game.result || {}
       this.game.result.home = this.game.result.home ? this.game.result.home : 0
       this.game.result.away = this.game.result.away ? this.game.result.away : 0
-      if (team === 'home') {
+      if (place === 'home') {
         this.game.result.home++
       } else {
         this.game.result.away++
@@ -69,7 +73,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .container {
-    padding: 0.5em;
+    padding: 1em;
     border: 1px solid black;
   }
 

@@ -4,17 +4,18 @@
       <li class="header">
         <div>Päivä:</div>
         <div>Ottelu:</div>
-        <div></div></li>
+        <div>Tulos</div>
+      </li>
       <li class="game" v-for="game in games" v-bind:key="game.id">
-        <div>{{game.date}} {{game.time}}</div>
-        <div>{{game.home}} - {{game.away}}</div>
+        <div class="date">{{game.date}} {{game.time}}</div>
+        <div class="teams">{{game.home}} - {{game.away}}</div>
         <div>
           <div @click="addResult(game.id)" v-if="game.result && !changeResult.includes(game.id)">
             {{game.result.home}} - {{game.result.away}}
           </div>
           <div>
             <div @click="addResult(game.id)" v-if="!game.result && !changeResult.includes(game.id)">Lisää tulos</div>
-            <v-add-result v-bind:game="game" v-if="changeResult.includes(game.id)" v-on:CloseMatch="closeMatch($event, game.result)" />
+            <v-add-result v-bind:game="game" v-if="changeResult.includes(game.id)" v-on:CloseMatch="closeMatch($event, game.result, game.events)" />
           </div>
         </div>
       </li>
@@ -100,9 +101,10 @@ export default {
     addResult (id) {
       this.changeResult.push(id)
     },
-    closeMatch (id, result) {
+    closeMatch (id, result, events) {
       db.doc(id).update({
-        result: result
+        result: result,
+        events: events
       }).catch(err => {
         alert('Tulosta ei tallennettu. Oikeuksissa tai tallentamisessa ongelmia.')
         console.log(err)
@@ -114,27 +116,34 @@ export default {
 </script>
 
 <style scoped>
-  ul li {
-    list-style-type: none;
-    min-width: 300px;
+  ul {
+    padding-left: 10px;
   }
 
-  .games.container {
-    margin: 0 auto;
+  li {
+    padding: 0;
+    list-style-type: none;
+    min-width: 380px;
   }
 
   .header {
     font-size: 1.25em;
     display: grid;
     grid-template-columns: minmax(90px, 150px) 200px auto;
-    grid-column-gap: 1em;
   }
 
   .game {
-    display: grid;
-    grid-template-columns: minmax(90px, 150px) 200px auto;
-    grid-column-gap: 1em;
-    padding-top: 0.25em;
+    display: flex;
+    flex-flow: row wrap;
+    margin-top: 0.5em;
+  }
+
+  .game > .date {
+    flex-basis: 150px;
+  }
+
+  .game > .teams {
+    flex-basis: 200px;
   }
 
 </style>
