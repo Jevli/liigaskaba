@@ -1,7 +1,10 @@
 <template>
   <div class="mainview">
     <div class="header">
-      <span>Login/Logout</span>
+      <span>
+        <router-link to="/login" v-if="!currentUser">Login</router-link>
+        <router-link to="/logout" v-if="currentUser">Logout</router-link>
+      </span>
     </div>
     <div class="tabs">
       <div class="tab standing" @click="updateState('standing')">
@@ -21,6 +24,8 @@
 </template>
 
 <script>
+import firebase from 'firebase'
+
 import ListGames from '@/components/ListGames'
 
 export default {
@@ -30,7 +35,8 @@ export default {
   },
   data: () => {
     return {
-      state: undefined
+      state: undefined,
+      currentUser: firebase.auth().currentUser
     }
   },
   methods: {

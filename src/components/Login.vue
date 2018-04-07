@@ -1,5 +1,5 @@
 <template>
   <div>
-    Login here
+    Täällä ei ole mitään, <router-link to="/main">mee takas</router-link>.
   </div>
 </template>

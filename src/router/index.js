@@ -11,11 +11,11 @@ const router = new Router({
   routes: [
     {
       path: '*',
-      redirect: '/login'
+      redirect: '/main'
     },
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/main'
     },
     {
       path: '/login',
@@ -28,11 +28,8 @@ const router = new Router({
     },
     {
       path: '/main',
-      name: 'MainView',
+      name: 'Main',
       component: MainView,
-      meta: {
-        requiresAuth: true
-      },
       props: (route) => ({ query: { team: route.query.team, place: route.query.place } })
     }
   ]
@@ -40,13 +37,13 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const currentUser = firebase.auth().currentUser
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
   if (to.path === '/logout') {
-    if (currentUser !== null) firebase.auth.signOut().then(() => next('login'))
-    else next('login')
-  } else if (requiresAuth && !currentUser) next('login')
-  else next()
+    if (currentUser !== null) firebase.auth.signOut().then(() => next('main'))
+    else next('main')
+  } else {
+    next()
+  }
 })
 
 export default router

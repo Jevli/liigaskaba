@@ -103,6 +103,9 @@ export default {
     closeMatch (id, result) {
       db.doc(id).update({
         result: result
+      }).catch(err => {
+        alert('Tulosta ei tallennettu. Oikeuksissa tai tallentamisessa ongelmia.')
+        console.log(err)
       })
       this.changeResult = this.changeResult.filter(match => match !== id)
     }
