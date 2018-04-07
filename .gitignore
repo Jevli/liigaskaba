@@ -14,4 +14,4 @@ yarn-error.log*
 *.sln
 
 # config file
-config.json
+firebaseConfiguration.json

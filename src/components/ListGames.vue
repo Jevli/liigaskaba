@@ -24,7 +24,7 @@
 
 <script>
 import InputResult from '@/components/helpers/InputResult'
-import config from '../../config'
+import config from '../../firebaseConfiguration'
 
 const firebase = require('firebase')
 require('firebase/firestore')
