@@ -14,7 +14,7 @@
           </div>
           <div>
             <div @click="addResult(game.id)" v-if="!game.result && !changeResult.includes(game.id)">Lisää tulos</div>
-            <v-add-result v-bind:game="game" v-if="changeResult.includes(game.id)" v-on:CloseMatch="closeMatch($event)" />
+            <v-add-result v-bind:game="game" v-if="changeResult.includes(game.id)" v-on:CloseMatch="closeMatch($event, game.result)" />
           </div>
         </div>
       </li>
@@ -24,8 +24,14 @@
 
 <script>
 import InputResult from '@/components/helpers/InputResult'
+import config from '../../config'
 
-import * as data from '../assets/games.json'
+const firebase = require('firebase')
+require('firebase/firestore')
+
+firebase.initializeApp(config.fireStore)
+
+var db = firebase.firestore().collection('games')
 
 export default {
   props: {
@@ -42,21 +48,33 @@ export default {
   },
   data: () => {
     return {
-      changeResult: []
+      changeResult: [],
+      games: []
     }
   },
   components: {
     'v-add-result': InputResult
   },
   beforeMount () {
-    this.sortGamesBy()
-    if (this.query && this.query.team) {
-      this.filterGamesBy(this.query.team, this.query.place)
-    }
+    db.get()
+      .then(res => {
+        res.forEach(doc => {
+          let data = doc.data()
+          data.id = doc.id
+          this.games.push(data)
+        })
+        this.sortGamesBy()
+        if (this.query && this.query.team) {
+          this.filterGamesBy(this.query.team, this.query.place)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
   },
   methods: {
     sortGamesBy () {
-      this.games = [...data.games].sort((a, b) => {
+      this.games = [...this.games].sort((a, b) => {
         const aDate = a.date.split('/')
         const aTime = a.time.split(':')
         const bTime = b.time.split(':')
@@ -82,7 +100,10 @@ export default {
     addResult (id) {
       this.changeResult.push(id)
     },
-    closeMatch (id) {
+    closeMatch (id, result) {
+      db.doc(id).update({
+        result: result
+      })
       this.changeResult = this.changeResult.filter(match => match !== id)
     }
   }
