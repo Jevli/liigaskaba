@@ -25,14 +25,9 @@
 
 <script>
 import InputResult from '@/components/helpers/InputResult'
-import config from '../../firebaseConfiguration'
+import {db} from '../firebase'
 
-const firebase = require('firebase')
-require('firebase/firestore')
-
-firebase.initializeApp(config.fireStore)
-
-var db = firebase.firestore().collection('games')
+const gamesDb = db.collection('games')
 
 export default {
   props: {
@@ -57,7 +52,7 @@ export default {
     'v-add-result': InputResult
   },
   beforeMount () {
-    db.get()
+    gamesDb.get()
       .then(res => {
         res.forEach(doc => {
           let data = doc.data()
@@ -102,7 +97,7 @@ export default {
       this.changeResult.push(id)
     },
     closeMatch (id, result, events) {
-      db.doc(id).update({
+      gamesDb.doc(id).update({
         result: result,
         events: events
       }).catch(err => {

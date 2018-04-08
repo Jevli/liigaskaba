@@ -14,11 +14,13 @@
         Ottelut
       </div>
       <div class="tab contest" @click="updateState('contest')">
-        Tilanne
+        Potkupalloveikkaus
       </div>
     </div>
     <div class="content">
       <v-list-games v-if="state === 'list'" />
+      <v-standing v-if="state === 'standing'" />
+      <v-contest v-if="state === 'contest'" />
     </div>
   </div>
 </template>
@@ -27,11 +29,15 @@
 import firebase from 'firebase'
 
 import ListGames from '@/components/ListGames'
+import Standing from '@/components/Standing'
+import Contest from '@/components/Contest'
 
 export default {
   name: 'MainView',
   components: {
-    'v-list-games': ListGames
+    'v-list-games': ListGames,
+    'v-standing': Standing,
+    'v-contest': Contest
   },
   data: () => {
     return {
