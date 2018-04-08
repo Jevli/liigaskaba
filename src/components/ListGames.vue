@@ -14,7 +14,7 @@
             {{game.result.home}} - {{game.result.away}}
           </div>
           <div>
-            <div @click="addResult(game.id)" v-if="!game.result && !changeResult.includes(game.id)">Lisää tulos</div>
+            <div class="addResult" @click="addResult(game.id)" v-if="!game.result && !changeResult.includes(game.id)">Lisää</div>
             <v-add-result v-bind:game="game" v-if="changeResult.includes(game.id)" v-on:CloseMatch="closeMatch($event, game.result, game.events)" />
           </div>
         </div>
@@ -124,7 +124,7 @@ export default {
   .header {
     font-size: 1.25em;
     display: grid;
-    grid-template-columns: minmax(90px, 150px) 200px auto;
+    grid-template-columns: minmax(90px, 145px) 180px auto;
   }
 
   .game {
@@ -134,11 +134,18 @@ export default {
   }
 
   .game > .date {
-    flex-basis: 150px;
+    flex-basis: 145px;
   }
 
   .game > .teams {
-    flex-basis: 200px;
+    flex-basis: 180px;
+  }
+
+  .addResult {
+    border-radius: 7.5px;
+    background-color: lightblue;
+    padding: 5px;
+    font-size: 12px;
   }
 
 </style>

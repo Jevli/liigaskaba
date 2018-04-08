@@ -64,8 +64,8 @@ export default {
 <style scoped>
   .mainview {
     display: grid;
-    grid-template-rows: 1.5em 2em auto;
-    grid-row-gap: 0.5em;
+    grid-template-rows: 1em 4em auto;
+    grid-row-gap: 1em;
   }
 
   .header {
@@ -81,7 +81,7 @@ export default {
   }
 
   .tab {
-    margin: 0 5px;
+    margin: 1px 2.5px;
     border: solid 1px black;
     border-radius: 1em;
     padding: 0.45em 1em;

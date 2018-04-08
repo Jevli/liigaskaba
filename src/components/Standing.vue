@@ -2,23 +2,27 @@
   <div class="standing">
       <ul>
           <strong><li>
-              <div>#</div>
-              <div>Joukkue</div>
-              <div>W</div>
-              <div>D</div>
-              <div>L</div>
-              <div>F</div>
-              <div>A</div>
-              <div>P</div>
+              <div title="Sijoitus">#</div>
+              <div class="teams" title="Joukkueen nimi">Joukkue</div>
+              <div title="Pelit">G</div>
+              <div title="Voitot">W</div>
+              <div title="Tasapelit">D</div>
+              <div title="Häviöt">L</div>
+              <div title="Tehdyt maalit">F</div>
+              <div title="Päästetyt maalit">A</div>
+              <div title="Maaliero">GD</div>
+              <div title="Pisteet">P</div>
           </li></strong>
           <li v-for="(team, index) in teams" v-bind:key="team.id">
               <div>{{index + 1}}</div>
-              <div>{{team.id}}</div>
+              <div class="teams">{{team.id}}</div>
+              <div>{{team.games}}</div>
               <div>{{team.wins}}</div>
               <div>{{team.draws}}</div>
               <div>{{team.loses}}</div>
               <div>{{team.for}}</div>
               <div>{{team.agains}}</div>
+              <div>{{team.goaldifference}}</div>
               <div><strong>{{team.points}}</strong></div>
           </li>
       </ul>
@@ -43,7 +47,9 @@ export default {
         res.forEach(doc => {
           let data = doc.data()
           data.id = doc.id
+          data.games = data.wins + data.draws + data.loses
           data.points = data.wins * 3 + data.draws
+          data.goaldifference = data.for - data.agains
           this.teams.push(data)
         })
         this.sortByPoints()
@@ -83,7 +89,13 @@ export default {
     list-style-type: none;
 
     display: inline-grid;
-    grid-template-columns: 25px 150px repeat(6, 25px)
+    grid-template-columns: 25px 130px repeat(6, 25px) 35px 25px;
+
+    text-align: center;
+  }
+
+  .teams {
+    text-align: left;
   }
 
 </style>
