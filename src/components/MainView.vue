@@ -2,8 +2,8 @@
   <div class="mainview">
     <div class="header">
       <span>
-        <router-link to="/login" v-if="!currentUser">Login</router-link>
-        <router-link to="/logout" v-if="currentUser">Logout</router-link>
+        <a href="#" v-if="!currentUser" @click="login=true">Login</a>
+        <a href="#" v-if="currentUser" v-on:click="logout()">Logout</a>
       </span>
     </div>
     <div class="tabs">
@@ -18,9 +18,10 @@
       </div>
     </div>
     <div class="content">
-      <v-list-games v-if="state === 'list'" />
-      <v-standing v-if="state === 'standing'" />
-      <v-contest v-if="state === 'contest'" />
+      <v-list-games v-if="state === 'list' && !login" />
+      <v-standing v-if="state === 'standing' && !login" />
+      <v-contest v-if="state === 'contest' && !login" />
+      <v-login v-if="login" v-on:signIn="signIn($event)" />
     </div>
   </div>
 </template>
@@ -31,19 +32,25 @@ import firebase from 'firebase'
 import ListGames from '@/components/ListGames'
 import Standing from '@/components/Standing'
 import Contest from '@/components/Contest'
+import Login from '@/components/helpers/Login'
 
 export default {
   name: 'MainView',
   components: {
     'v-list-games': ListGames,
     'v-standing': Standing,
-    'v-contest': Contest
+    'v-contest': Contest,
+    'v-login': Login
   },
   data: () => {
     return {
       state: undefined,
+      login: false,
       currentUser: firebase.auth().currentUser
     }
+  },
+  beforeMount () {
+    this.currentUser = firebase.auth().currentUser
   },
   methods: {
     updateState: function (state) {
@@ -56,6 +63,23 @@ export default {
       const newDiv = document.getElementsByClassName(state)[0]
       newDiv.style.backgroundColor = 'black'
       newDiv.style.color = 'white'
+    },
+    logout: function () {
+      firebase.auth().signOut().then(() => {
+        this.currentUser = undefined
+      }, (error) => {
+        console.error('Sign Out Error', error)
+      })
+    },
+    signIn: function (login) {
+      firebase.auth().signInWithEmailAndPassword(login.email, login.pwd).then(
+        (user) => {
+          this.currentUser = firebase.auth().currentUser
+          this.login = false
+        }, (err) => {
+          alert('There was on error in login: ' + err)
+        }
+      )
     }
   }
 }

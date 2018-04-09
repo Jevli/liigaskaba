@@ -8,7 +8,7 @@
           <div>Ottelu:</div>
           <div>Tulos</div>
         </li>
-        <li class="game" v-for="game in games" v-bind:key="game.id">
+        <li class="game" v-for="game in games" v-bind:key="game.id" >
           <div class="date">{{game.date}} {{game.time}}</div>
           <div class="teams">{{game.home}} - {{game.away}}</div>
           <div>
@@ -52,18 +52,6 @@ import {db} from '../firebase'
 const gamesDb = db.collection('games')
 
 export default {
-  props: {
-    query: {
-      team: {
-        type: String,
-        default: undefined
-      },
-      place: {
-        type: String,
-        default: undefined
-      }
-    }
-  },
   data: () => {
     return {
       changeResult: [],
