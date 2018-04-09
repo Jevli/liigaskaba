@@ -13,7 +13,7 @@
               <div title="Maaliero">GD</div>
               <div title="Pisteet">P</div>
           </li></strong>
-          <li v-for="(team, index) in teams" v-bind:key="team.id">
+          <li v-for="(team, index) in teams" v-bind:key="team.id" v-if="teams">
               <div>{{index + 1}}</div>
               <div class="teams">{{team.id}}</div>
               <div>{{team.games}}</div>
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import {db} from '../firebase'
 
 const teamsDb = db.collection('teams')
@@ -44,34 +45,22 @@ export default {
   beforeMount () {
     teamsDb.get()
       .then(res => {
+        let teams = []
         res.forEach(doc => {
           let data = doc.data()
           data.id = doc.id
           data.games = data.wins + data.draws + data.loses
           data.points = data.wins * 3 + data.draws
           data.goaldifference = data.for - data.agains
-          this.teams.push(data)
+          teams.push(data)
         })
-        this.sortByPoints()
+        this.teams = _.orderBy(teams, ['points', 'goaldifference', 'for'], ['desc', 'desc', 'desc'])
       })
       .catch(err => {
         console.log(err)
       })
   },
   methods: {
-    sortByPoints () {
-      this.teams = [...this.teams].sort((a, b) => {
-        if (a.points === b.points) {
-          if (a.for - a.agains === b.for - b.agains) {
-            return a.for < b.for
-          } else {
-            return a.for - a.agains < b.for - b.agains
-          }
-        } else {
-          return a.points < b.points
-        }
-      })
-    }
   }
 }
 </script>

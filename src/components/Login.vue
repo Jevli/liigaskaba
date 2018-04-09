@@ -23,7 +23,7 @@ export default {
     signIn: function () {
       firebase.auth().signInWithEmailAndPassword(this.email, this.pwd).then(
         (user) => {
-          this.$router.replace('chat')
+          this.$router.replace('main')
         }, (err) => {
           alert('There was on error in login: ' + err)
         }
