@@ -1,29 +1,33 @@
 <template>
-  <div class="games container">
-    <ul>
-      <li class="header">
-        <div>Päivä:</div>
-        <div>Ottelu:</div>
-        <div>Tulos</div>
-      </li>
-      <li class="game" v-for="game in games" v-bind:key="game.id">
-        <div class="date">{{game.date}} {{game.time}}</div>
-        <div class="teams">{{game.home}} - {{game.away}}</div>
-        <div>
-          <div @click="addResult(game.id)" v-if="game.result && !changeResult.includes(game.id)">
-            {{game.result.home}} - {{game.result.away}}
-          </div>
+  <div>
+    <v-loader v-if="!games.length" />
+    <div class="games container" v-if="games.length">
+      <ul>
+        <li class="header">
+          <div>Päivä:</div>
+          <div>Ottelu:</div>
+          <div>Tulos</div>
+        </li>
+        <li class="game" v-for="game in games" v-bind:key="game.id">
+          <div class="date">{{game.date}} {{game.time}}</div>
+          <div class="teams">{{game.home}} - {{game.away}}</div>
           <div>
-            <div class="addResult" @click="addResult(game.id)" v-if="!game.result && !changeResult.includes(game.id) && currentUser">Lisää</div>
-            <v-add-result v-bind:game="game" v-if="changeResult.includes(game.id)" v-on:CloseMatch="closeMatch($event, game.result, game.events)" />
+            <div @click="addResult(game.id)" v-if="game.result && !changeResult.includes(game.id)">
+              {{game.result.home}} - {{game.result.away}}
+            </div>
+            <div>
+              <div class="addResult" @click="addResult(game.id)" v-if="!game.result && !changeResult.includes(game.id) && currentUser">Lisää</div>
+              <v-add-result v-bind:game="game" v-if="changeResult.includes(game.id)" v-on:CloseMatch="closeMatch($event, game.result, game.events)" />
+            </div>
           </div>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
+import Loader from '@/components/helpers/Loader'
 import InputResult from '@/components/helpers/InputResult'
 
 import firebase from 'firebase'
@@ -52,17 +56,19 @@ export default {
     }
   },
   components: {
-    'v-add-result': InputResult
+    'v-add-result': InputResult,
+    'v-loader': Loader
   },
   beforeMount () {
     gamesDb.get()
       .then(res => {
+        let games = []
         res.forEach(doc => {
           let data = doc.data()
           data.id = doc.id
-          this.games.push(data)
+          games.push(data)
         })
-        this.sortGamesBy()
+        this.sortGamesBy(games)
         if (this.query && this.query.team) {
           this.filterGamesBy(this.query.team, this.query.place)
         }
@@ -72,18 +78,19 @@ export default {
       })
   },
   methods: {
-    sortGamesBy () {
-      this.games = [...this.games].sort((a, b) => {
-        const aDate = a.date.split('/')
-        const aTime = a.time.split(':')
-        const bTime = b.time.split(':')
-        const bDate = b.date.split('/')
-        if (aDate[2] - bDate[2] + aDate[1] - bDate[1] + aDate[0] - bDate[0]) {
-          return aDate[2] - bDate[2] + aDate[1] - bDate[1] + aDate[0] - bDate[0]
-        } else {
-          return aTime[0] - bTime[0] + aTime[1] - bTime[1]
-        }
-      })
+    sortGamesBy (games) {
+      this.games = [...games].sort(this.compareMatchDates)
+    },
+    compareMatchDates (dateA, dateB) {
+      const aDate = dateA.date.split('/')
+      const aTime = dateA.time.split(':')
+      const bTime = dateB.time.split(':')
+      const bDate = dateB.date.split('/')
+      if (aDate[2] - bDate[2] + aDate[1] - bDate[1] + aDate[0] - bDate[0]) {
+        return aDate[2] - bDate[2] + aDate[1] - bDate[1] + aDate[0] - bDate[0]
+      } else {
+        return aTime[0] - bTime[0] + aTime[1] - bTime[1]
+      }
     },
     filterGamesBy (team, place) {
       this.games = this.games.filter(game => {
