@@ -1,7 +1,12 @@
 <template>
   <div class="container">
-    <div class="events" v-if="game.events" v-for="event in game.events" v-bind:key="event.id">
-      {{event.team}} {{event.player}} <img src="/static/soccer-ball_26bd.png"/> {{event.time}} <img src="/static/clock.png" />
+    <div class="events" v-if="game.events" v-for="event in game.events" :key="event.id">
+      {{event.team}} {{event.player}}
+      <img src="/static/soccer-ball_26bd.png"/> {{event.time}}
+      <img src="/static/clock.png" />
+      <img class="delete" src="/static/redcross.png"
+        @click="removeEvent(event)"
+      />
     </div>
     <div class="input">
       <input class="time" type="number" v-model="event.time" min="0">
@@ -12,13 +17,14 @@
       <button v-on:click="addEvent('away', game.away)">{{game.away}}</button>
     </div>
     <div>
-      <button v-on:click="$emit('CloseMatch', game.id)">Tallenna</button>
+      <button v-on:click="$emit('closeMatchEdit', game.id)">Tallenna</button>
     </div>
   </div>
 </template>
 
 <script>
 import uuidv4 from 'uuid/v4'
+import _ from 'lodash'
 
 export default {
   name: 'InputResult',
@@ -51,8 +57,8 @@ export default {
     addEvent (place, team) {
       this.game.events = this.game.events || []
       this.game.result = this.game.result || {}
-      this.game.result.home = this.game.result.home ? this.game.result.home : 0
-      this.game.result.away = this.game.result.away ? this.game.result.away : 0
+      this.game.result.home = this.game.result.home || 0
+      this.game.result.away = this.game.result.away || 0
       if (place === 'home') {
         this.game.result.home++
       } else {
@@ -61,6 +67,17 @@ export default {
       this.game.events.push({ 'id': uuidv4(), 'team': team, 'time': this.event.time, 'player': this.event.player })
       this.event.player = ''
       this.event.time++
+
+      this.game.events = _.orderBy(this.game.events, (e) => parseInt(e.time))
+    },
+    removeEvent (event) {
+      event.team === this.game.home ? this.game.result.home-- : this.game.result.away--
+      this.game.events = _
+        .chain(this.game.events)
+        .filter(e => e.id !== event.id)
+        .orderBy((e) => parseInt(e.time))
+        .value()
+      this.$forceUpdate()
     }
   }
 }
@@ -85,4 +102,10 @@ export default {
   .time {
     width: 40px;
   }
+
+  .delete {
+    float: right;
+    cursor: pointer;
+  }
+
 </style>

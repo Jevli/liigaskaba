@@ -66,6 +66,9 @@ export default {
     display: grid;
     grid-template-rows: 1em 4em auto;
     grid-row-gap: 1em;
+    min-width: 400px;
+    max-width: 50vw;
+    margin: 0 auto;
   }
 
   .header {

@@ -12,12 +12,28 @@
           <div class="date">{{game.date}} {{game.time}}</div>
           <div class="teams">{{game.home}} - {{game.away}}</div>
           <div>
-            <div @click="addResult(game.id)" v-if="game.result && !changeResult.includes(game.id)">
+
+            <div @click="addResult(game.id)"
+              v-if="game.result && !changeResult.includes(game.id)"
+            >
               {{game.result.home}} - {{game.result.away}}
             </div>
+
             <div>
-              <div class="addResult" @click="addResult(game.id)" v-if="!game.result && !changeResult.includes(game.id) && currentUser">Lisää</div>
-              <v-add-result v-bind:game="game" v-if="changeResult.includes(game.id)" v-on:CloseMatch="closeMatch($event, game.result, game.events)" />
+
+              <div class="addResult"
+                @click="addResult(game.id)"
+                v-if="!game.result && !changeResult.includes(game.id) && currentUser"
+              >
+                Lisää
+              </div>
+
+              <v-add-result
+                v-bind:game="game"
+                v-if="changeResult.includes(game.id)"
+                v-on:closeMatchEdit="closeMatchEdit($event, game.result, game.events)"
+              />
+
             </div>
           </div>
         </li>
@@ -106,7 +122,7 @@ export default {
     addResult (id) {
       if (this.currentUser) this.changeResult.push(id)
     },
-    closeMatch (id, result, events) {
+    closeMatchEdit (id, result, events) {
       gamesDb.doc(id).update({
         result: result,
         events: events
