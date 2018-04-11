@@ -6,6 +6,12 @@
       <div v-for="(t, i) in gamers" :key="i">
         {{t.player}}: {{t.points}}
       </div>
+
+      <br><!--Nicer css rules to be added-->
+      <br>
+      <div class="Add new player" v-if="currentUser">
+        Here will be added adding new player
+      </div>
     </div>
   </div>
 </template>
@@ -14,6 +20,7 @@
 import Loader from '@/components/helpers/Loader'
 import _ from 'lodash'
 import {getTeamsInOrder} from '../utils'
+import firebase from 'firebase'
 
 import json from './contestTable.json'
 
@@ -26,7 +33,8 @@ export default {
     return {
       json: json,
       gamers: [],
-      teams: []
+      teams: [],
+      currentUser: firebase.auth().currentUser
     }
   },
   beforeMount () {
