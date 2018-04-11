@@ -1,14 +1,21 @@
 <template>
   <div class="contest">
-    <v-loader v-if="!msg"/>
-    <div class="contest" v-if="msg">
-      <h1>{{msg}}</h1>
+    <v-loader v-if="!gamers.length || !teams.length"/>
+    <div class="contest" v-if="gamers.length && teams.length">
+      Pisteet: <br>
+      <div v-for="(t, i) in gamers" :key="i">
+        {{t.player}}: {{t.points}}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Loader from '@/components/helpers/Loader'
+import _ from 'lodash'
+import {getTeamsInOrder} from '../utils'
+
+import json from './contestTable.json'
 
 export default {
   name: 'Contest',
@@ -17,15 +24,40 @@ export default {
   },
   data () {
     return {
-      msg: ''
+      json: json,
+      gamers: [],
+      teams: []
     }
   },
   beforeMount () {
-    setTimeout(() => {
-      this.msg = 'Potkupalloveikkaus tulokset tulee tänne'
-    }, 2000)
+    getTeamsInOrder()
+      .then(teams => {
+        this.teams = teams
+        updateGamers()
+      })
+      .catch(error => {
+        console.error(error)
+      })
+
+    const updateGamers = () => {
+      _.mapValues(this.json, (val, key) => {
+        this.gamers.push(
+          {
+            player: key,
+            points: _
+              .chain(val)
+              .map(v => this.distanceOfRank(Object.values(v)[0], parseInt(Object.keys(v))))
+              .reduce((sum, n) => sum + n)
+          }
+        )
+      })
+      this.gamers = _.orderBy(this.gamers, ['points'])
+    }
   },
   methods: {
+    distanceOfRank (team, rank) {
+      return Math.abs(_.findIndex(this.teams, (o) => o.id === team) - rank)
+    }
   }
 }
 </script>

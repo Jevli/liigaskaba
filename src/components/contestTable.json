@@ -1,0 +1,5 @@
+{
+    "Joni": [{ "0": "HJK"}, {"1": "KuPS"}, { "2": "IFK Marienhamn"}, {"3": "Ilves"},{ "4": "FC Inter"}, {"5": "SJK"},{ "6": "Honka"}, {"7": "FC Lahti"}, {"8": "VPS"}, {"9": "TPS"}, {"10": "RoPS"}, {"11": "PS Kemi"}],
+    "Horhe": [{ "0": "HJK"}, {"1": "KuPS"}, { "2": "RoPS"}, {"3": "FC Inter"},{ "4": "Ilves"}, {"5": "SJK"},{ "6": "IFK Marienhamn"}, {"7": "VPS"}, {"8": "FC Lahti"}, {"9": "TPS"}, {"10": "Honka"}, {"11": "PS Kemi"}],
+    "Isi": [{ "0": "HJK"}, {"1": "RoPS"}, { "2": "VPS"}, {"3": "FC Lahti"},{ "4": "PS Kemi"}, {"5": "FC Honka"},{ "6": "KuPS"}, {"7": "TPS"}, {"8": "SJK"}, {"9": "Ilves"}, {"10": "FC Inter"}, {"11": "IFK Mariehamn"}]
+}

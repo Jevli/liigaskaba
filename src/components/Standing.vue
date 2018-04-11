@@ -33,11 +33,8 @@
 </template>
 
 <script>
-import _ from 'lodash'
-import {db} from '../firebase'
 import Loader from '@/components/helpers/Loader'
-
-const teamsDb = db.collection('teams')
+import {getTeamsInOrder} from '../utils'
 
 export default {
   name: 'Stanging',
@@ -50,21 +47,12 @@ export default {
     }
   },
   beforeMount () {
-    teamsDb.get()
-      .then(res => {
-        let teams = []
-        res.forEach(doc => {
-          let data = doc.data()
-          data.id = doc.id
-          data.games = data.wins + data.draws + data.loses
-          data.points = data.wins * 3 + data.draws
-          data.goaldifference = data.for - data.agains
-          teams.push(data)
-        })
-        this.teams = _.orderBy(teams, ['points', 'goaldifference', 'for'], ['desc', 'desc', 'desc'])
+    getTeamsInOrder()
+      .then(teams => {
+        this.teams = teams
       })
-      .catch(err => {
-        console.log(err)
+      .catch(error => {
+        console.error(error)
       })
   },
   methods: {
