@@ -13,7 +13,7 @@
       <div class="tab list" @click="updateState('list')">
         Ottelut
       </div>
-      <div class="tab contest" @click="updateState('contest')">
+      <div class="tab contest" @click="updateState('contest')" v-if="currentUser">
         Potkupalloveikkaus
       </div>
     </div>
