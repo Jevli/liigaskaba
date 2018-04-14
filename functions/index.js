@@ -6,9 +6,9 @@ admin.initializeApp(functions.config().firebase);
 var db = admin.firestore()
 
 const baseUrl = 'http://mc.instatfootball.com/api/v1/'
-const seasons = 'seasons?tournament_id=70'
+const seasonsUrl = 'seasons?tournament_id=70'
 const seasonMatchesUrl = 'matches?locale=en&tournament_id=70&season_id='
-const matchUrl = 'matches'
+const matchUrl = 'matches/'
 
 exports.importGames = functions.https.onRequest((request, response) => {
   const games = request.body.games
@@ -36,6 +36,31 @@ exports.updateSeasonMatches = functions.https.onRequest((request, response) => {
   .catch((err) => {
     console.error(err)
     response.status(500).send('Failed to get matches')
+  })
+})
+
+exports.getInstantSeasons = functions.https.onRequest((request, response) => {
+  makeInstatQuery(seasonsUrl)
+  .then((json) => {
+    response.status(200).send(json)
+  })
+  .catch((err) => {
+    console.error(err)
+    response.status(500).send('Failed to get seasons')
+  })
+})
+
+exports.getInstantSeasons = functions.https.onRequest((request, response) => {
+  const id = request.body.matchId
+  if (!id) respose.status(300).send('Missing match id.')
+
+  makeInstatQuery(matchUrl + id)
+  .then((json) => {
+    response.status(200).send(json)
+  })
+  .catch((err) => {
+    console.error(err)
+    response.status(500).send('Failed to get seasons')
   })
 })
 
