@@ -1,17 +1,21 @@
 <template>
   <div class="contest">
     <v-loader v-if="!gamers.length || !teams.length"/>
-    <div class="contest" v-if="gamers.length && teams.length">
-      Pisteet: <br>
-      <div v-for="(t, i) in gamers" :key="i">
-        {{t.player}}: {{t.points}}
-      </div>
+    <table class="contest" v-if="gamers.length && teams.length" border=1>
+      <tr>
+        <th>Pelaaja</th>
+        <th>Pts</th>
+        <th class="teams">{{listOfTeams}}</th>
+      </tr>
+      <tr v-for="(g, i) in gamers" :key="i">
+        <td>{{g.player}}</td>
+        <td>{{g.points}}</td>
+        <td class="teams">{{g.line | listOfLine}}</td>
+      </tr>
+    </table>
 
-      <br><!--Nicer css rules to be added-->
-      <br>
-      <div class="Add new player" v-if="currentUser">
-        Here will be added adding new player
-      </div>
+    <div class="addGamer" v-if="currentUser">
+      Here will be added adding new player
     </div>
   </div>
 </template>
@@ -55,7 +59,9 @@ export default {
             points: _
               .chain(val)
               .map(v => this.distanceOfRank(Object.values(v)[0], parseInt(Object.keys(v))))
-              .reduce((sum, n) => sum + n)
+              .reduce((sum, n) => sum + n),
+            line: _
+              .chain(val)
           }
         )
       })
@@ -66,6 +72,41 @@ export default {
     distanceOfRank (team, rank) {
       return Math.abs(_.findIndex(this.teams, (o) => o.id === team) - rank)
     }
+  },
+  filters: {
+    listOfLine: function (line) {
+      return line.map(obj => Object.values(obj)).join(', ')
+    }
+  },
+  computed: {
+    listOfTeams: function () {
+      return this.teams.map(team => team.id).join(', ')
+    }
   }
 }
 </script>
+
+<style scoped>
+  tr {
+    display: grid;
+    grid-template-columns: 60px 35px auto;
+    align-items: center;
+    text-align: left;
+    border: 1px solid black
+  }
+
+  th {
+    border: none;
+  }
+  td {
+    border: none;
+  }
+
+  .teams {
+    font-size: 0.7em;
+  }
+
+  .addGamer {
+    margin-top: 3em;
+  }
+</style>
