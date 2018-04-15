@@ -195,7 +195,7 @@ export default {
       right: 0;
       margin: 0 auto;
       width: 700px;
-      height: 350px;
+      height: 400px;
     }
   }
 
