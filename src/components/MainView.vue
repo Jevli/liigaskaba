@@ -21,7 +21,7 @@
       <v-list-games v-if="state === 'list' && !login" />
       <v-standing v-if="state === 'standing' && !login" />
       <v-contest v-if="state === 'contest' && !login" />
-      <v-login v-if="login" v-on:signIn="signIn($event)" />
+      <v-login v-if="login" v-on:signIn="signIn($event)" v-on:closeLogin="login = false" />
     </div>
   </div>
 </template>

@@ -4,7 +4,7 @@
     <input type="text" v-model="login.email" placeholder="Email"><br>
     <input type="password" v-model="login.pwd" placeholder="Password"><br>
     <button @click="$emit('signIn', login)">Login</button><br>
-    <span>Jos ei ole tiliä, <a href="#" @click="login = false"> mee takas </a></span>
+    <span>Jos ei ole tiliä, <a href="#" @click="$emit('closeLogin')"> mee takas </a></span>
   </div>
 </template>
 
