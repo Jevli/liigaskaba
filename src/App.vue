@@ -25,23 +25,6 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     height: 100vh;
     width: 100vw;
+    color: white;
   }
-
-  #main {
-    position: absolute;
-    top: 10vh;
-  }
-
-  @media screen and (max-width: 750px) {
-    #main {
-      left: 1vh;
-    }
-  }
-
-  @media screen and (min-width: 750px) {
-    #main {
-      left: calc(100vh / 2);
-    }
-  }
-
 </style>

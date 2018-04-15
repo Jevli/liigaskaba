@@ -56,7 +56,7 @@ export default {
     updateState: function (state) {
       if (this.state) {
         const oldDiv = document.getElementsByClassName(this.state)[0]
-        oldDiv.style.backgroundColor = 'white'
+        oldDiv.style.backgroundColor = 'transparent'
         oldDiv.style.color = 'black'
       }
       this.state = state

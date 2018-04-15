@@ -1,6 +1,6 @@
 <template>
   <div>
-    <svg id="field" v-if="screenWidth > screenHeight">
+    <svg id="field" v-if="screenWidth > 750">
       <!-- Sidelines -->
       <line :x1=sw*5 :y1=sh*5 :x2=svgWidth-sw*5 :y2=sh*5 />
       <line :x1=sw*5 :y1=svgHeight-sh*5 :x2=svgWidth-sw*5 :y2=svgHeight-sh*5 />
@@ -25,7 +25,7 @@
       <line :x1=sw*23 :y1=svgHeight-sh*21 :x2=sw*23 :y2=sh*21 />
       <circle :cx=sw*17 :cy=svgHeight/2 :r=2 />
       <path :d="corner(sw*23, svgHeight-sh*30, sw*27, svgHeight/2, sw*23, sh*30)" />
- 
+
       <line :x1=svgWidth-sw*5 :y1=sh*21 :x2=svgWidth-sw*23 :y2=sh*21 />
       <line :x1=svgWidth-sw*5 :y1=svgHeight-sh*21 :x2=svgWidth-sw*23 :y2=svgHeight-sh*21 />
       <line :x1=svgWidth-sw*23 :y1=svgHeight-sh*21 :x2=svgWidth-sw*23 :y2=sh*21 />
@@ -55,7 +55,61 @@
       <circle :cx=svgWidth/2 :cy=svgHeight/2 :r=(sw+sh)/2*9 />
       <circle :cx=svgWidth/2 :cy=svgHeight/2 :r=2 />
     </svg>
-    <svg id="field" v-if="screenWidth < screenHeight">
+    <svg id="field" v-if="screenWidth < 750">
+      <!-- Sidelines -->
+      <line :x1=sw*2.5 :y1=sh*5 :x2=sw*2.5 :y2=svgHeight-sh*5 />
+      <line :x1=svgWidth-sw*2.5 :y1=sh*5 :x2=svgWidth-sw*2.5 :y2=svgHeight-sh*5 />
+
+      <!-- Endlines -->
+      <line :x1=sw*2.5 :y1=sh*5 :x2=svgWidth-sw*2.5 :y2=sh*5 />
+      <line :x1=sw*11.5 :y1=sh*4 :x2=sw*11.5 :y2=sh*5 />
+      <line :x1=svgWidth-sw*11.5 :y1=sh*4 :x2=svgWidth-sw*11.5 :y2=sh*5 />
+
+      <line :x1=sw*2.5 :y1=svgHeight-sh*5 :x2=svgWidth-sw*2.5 :y2=svgHeight-sh*5 />
+      <line :x1=sw*11.5 :y1=svgHeight-sh*4 :x2=sw*11.5 :y2=svgHeight-sh*5 />
+      <line :x1=svgWidth-sw*11.5 :y1=svgHeight-sh*4 :x2=svgWidth-sw*11.5 :y2=svgHeight-sh*5 />
+
+      <!-- Corner areas -->
+      <path :d="corner(sw*3.5, sh*5, sw*3.5, sh*6, sw*2.5, sh*6)" />
+      <path :d="corner(svgWidth-sw*3.5, sh*5, svgWidth-sw*3.5, sh*6, svgWidth-sw*2.5, sh*6)" />
+      <path :d="corner(sw*3.5, svgHeight-sh*5, sw*3.5, svgHeight-sh*6, sw*2.5, svgHeight-sh*6)" />
+      <path :d="corner(svgWidth-sw*3.5, svgHeight-sh*5, svgWidth-sw*3.5, svgHeight-sh*6, svgWidth-sw*2.5, svgHeight-sh*6)" />
+
+      <!-- Penalty areas -->
+      <line :x1=sw*21 :y1=sh*5 :x2=sw*21 :y2=sh*23 />
+      <line :x1=svgWidth-sw*21 :y1=sh*5 :x2=svgWidth-sw*21 :y2=sh*23 />
+      <line :x1=svgWidth-sw*21 :y1=sh*23 :x2=sw*21 :y2=sh*23 />
+      <circle :cx=svgWidth/2 :cy=sh*17 :r=2 />
+      <path :d="corner(svgWidth-sw*30, sh*23, svgWidth/2, sh*27, sw*30, sh*23)" />
+
+      <line :x1=sw*21 :y1=svgHeight-sh*5 :x2=sw*21 :y2=svgHeight-sh*23 />
+      <line :x1=svgWidth-sw*21 :y1=svgHeight-sh*5 :x2=svgWidth-sw*21 :y2=svgHeight-sh*23 />
+      <line :x1=svgWidth-sw*21 :y1=svgHeight-sh*23 :x2=sw*21 :y2=svgHeight-sh*23 />
+      <circle :cx=svgWidth/2 :cy=svgHeight-sw*17 :r=2 />
+      <path :d="corner(svgWidth-sw*30, svgHeight-sh*23, svgWidth/2, svgHeight-sw*27, sw*30, svgHeight-sh*23)" />
+
+      <!-- 5 Meter area -->
+      <line :x1=sw*28 :y1=sh*5 :x2=sw*28 :y2=sh*11 />
+      <line :x1=svgWidth-sw*28 :y1=sh*5 :x2=svgWidth-sw*28 :y2=sh*11 />
+      <line :x1=sw*28 :y1=sh*11 :x2=svgWidth-sw*28 :y2=sh*11 />
+
+      <line :x1=sw*28 :y1=svgHeight-sh*5 :x2=sw*28 :y2=svgHeight-sh*11 />
+      <line :x1=svgWidth-sw*28 :y1=svgHeight-sh*5 :x2=svgWidth-sw*28 :y2=svgHeight-sh*11 />
+      <line :x1=sw*28 :y1=svgHeight-sh*11 :x2=svgWidth-sw*28 :y2=svgHeight-sh*11 />
+
+      <!-- Goals -->
+      <line :x1=sw*31 :y1=sh*3 :x2=sw*31 :y2=sh*5 />
+      <line :x1=svgWidth-sw*31 :y1=sh*3 :x2=svgWidth-sw*31 :y2=sh*5 />
+      <line :x1=svgWidth-sw*31 :y1=sh*3 :x2=sw*31 :y2=sh*3 />
+
+      <line :x1=sw*31 :y1=svgHeight-sh*3 :x2=sw*31 :y2=svgHeight-sh*5 />
+      <line :x1=svgWidth-sw*31 :y1=svgHeight-sh*3 :x2=svgWidth-sw*31 :y2=svgHeight-sh*5 />
+      <line :x1=svgWidth-sw*31 :y1=svgHeight-sh*3 :x2=sw*31 :y2=svgHeight-sh*3 />
+
+      <!-- Half-way line and circle -->
+      <line :x1=sw*2.5 :y1=svgHeight/2 :x2=svgWidth-sw*2.5 :y2=svgHeight/2 />
+      <circle :cx=svgWidth/2 :cy=svgHeight/2 :r=(sw+sh)/2*9 />
+      <circle :cx=svgWidth/2 :cy=svgHeight/2 :r=2 />
     </svg>
   </div>
 </template>
@@ -74,6 +128,12 @@ export default {
   mounted () {
     this.svgWidth = document.getElementById('field').getBoundingClientRect().width
     this.svgHeight = document.getElementById('field').getBoundingClientRect().height
+    window.addEventListener('resize', () => {
+      this.screenWidth = document.documentElement.clientWidth
+      this.screenHeight = document.documentElement.clientHeight
+      this.svgWidth = document.getElementById('field').getBoundingClientRect().width
+      this.svgHeight = document.getElementById('field').getBoundingClientRect().height
+    })
   },
   methods: {
     corner: function (x, y, x1, y1, x2, y2) {
@@ -83,24 +143,21 @@ export default {
       corner.push([x1, y1].join(' '))
       corner.push([x2, y2].join(' '))
       return corner.join(' ')
-    }, 
-    test: function () {
-      return 'm ' + this.sw * 6 + ' ' + this.sh * 5 + ' C ' + this.sw * 6 + ' ' + this.sh * 5 + ' ' + this.sw * 6 + ' ' + this.sh * 6 + ' ' + this.sw * 5 + ' ' + this.sh * 6
     }
   },
   computed: {
     sw: function () {
-      if (this.screenWidth > this.screenHeight) {
-        return this.svgWidth / 120
+      if (this.screenWidth > 750) {
+        return Math.round(this.svgWidth / 120)
       } else {
-        return this.svgWidth / 70
+        return Math.round(this.svgWidth / 70)
       }
     },
     sh: function () {
-      if (this.screenWidth < this.screenHeight) {
-        return this.svgHeight / 120
+      if (this.screenWidth < 750) {
+        return Math.round(this.svgHeight / 120)
       } else {
-        return this.svgHeight / 70
+        return Math.round(this.svgHeight / 70)
       }
     }
   }
@@ -109,10 +166,9 @@ export default {
 
 <style>
   svg {
-    width: 90%;
-    height: 90vh;
+    position: fixed;
+    top: 25px;
     z-index: -1;
-    margin: 1% 5%;
     background-color: green;
   }
 
@@ -133,23 +189,23 @@ export default {
     fill: none;
   }
 
-  @media screen and (min-height: 400px) {
-    #svg {
-    }
-  }
-
-  @media screen and (max-height: 400px) {
-    #svg {
-    }
-  }
-
-  @media screen and (min-width: 750px){
-    #svg {
+  @media screen and (min-width: 750px) {
+    #field {
+      left: -25px;
+      right: 0;
+      margin: 0 auto;
+      width: 700px;
+      height: 350px;
     }
   }
 
   @media screen and (max-width: 750px) {
-    #svg {
+    #field {
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      width: 400px;
+      height: 90vh;
     }
   }
 
