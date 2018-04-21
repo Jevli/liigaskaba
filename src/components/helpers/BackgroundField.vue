@@ -167,8 +167,10 @@ export default {
 <style>
   svg {
     position: fixed;
-    top: 25px;
     z-index: -1;
+    top: -15px;
+    width: 98vw;
+    height: 98vh;
     background-color: green;
   }
 
@@ -187,26 +189,6 @@ export default {
     stroke: white;
     stroke-width: 2px;
     fill: none;
-  }
-
-  @media screen and (min-width: 750px) {
-    #field {
-      left: -25px;
-      right: 0;
-      margin: 0 auto;
-      width: 700px;
-      height: 400px;
-    }
-  }
-
-  @media screen and (max-width: 750px) {
-    #field {
-      left: 0;
-      right: 0;
-      margin: 0 auto;
-      width: 400px;
-      height: 90vh;
-    }
   }
 
 </style>

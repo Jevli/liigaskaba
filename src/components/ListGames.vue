@@ -141,6 +141,10 @@ export default {
     grid-template-columns: minmax(90px, 145px) 180px auto;
   }
 
+  .games {
+    padding-bottom: 50vh;
+  }
+
   .game {
     display: flex;
     flex-flow: row wrap;
