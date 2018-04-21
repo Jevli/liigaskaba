@@ -101,6 +101,12 @@ export default {
     justify-content: flex-end;
   }
 
+  a {
+    color: white;
+    font-weight: bold;
+    font-size: 1.15em;
+  }
+
   .tabs {
     display: flex;
     flex-direction: row;
@@ -109,9 +115,12 @@ export default {
 
   .tab {
     margin: 1px 2.5px;
-    border: solid 1px black;
+    border: solid 1px white;
     border-radius: 1em;
     padding: 0.45em 1em;
+    line-height: 2.5em;
+    vertical-align: middle;
+    font-weight: bold;
   }
 
   .tab:hover {
