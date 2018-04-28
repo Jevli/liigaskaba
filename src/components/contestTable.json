@@ -1,5 +1,5 @@
 {
-    "Joni": [{ "0": "HJK"}, {"1": "KuPS"}, { "2": "IFK Mariehamn"}, {"3": "Ilves"},{ "4": "FC Inter"}, {"5": "SJK"},{ "6": "Honka"}, {"7": "FC Lahti"}, {"8": "VPS"}, {"9": "TPS"}, {"10": "RoPS"}, {"11": "PS Kemi"}],
-    "Horhe": [{ "0": "HJK"}, {"1": "KuPS"}, { "2": "RoPS"}, {"3": "FC Inter"},{ "4": "Ilves"}, {"5": "SJK"},{ "6": "IFK Mariehamn"}, {"7": "VPS"}, {"8": "FC Lahti"}, {"9": "TPS"}, {"10": "Honka"}, {"11": "PS Kemi"}],
-    "Isi": [{ "0": "HJK"}, {"1": "KuPS"}, { "2": "FC Lahti"}, {"3": "SJK"},{ "4": "IFK Mariehamn"}, {"5": "Ilves"},{ "6": "VPS"}, {"7": "Inter"}, {"8": "Honka"}, {"9": "PS Kemi"}, {"10": "RoPS"}, {"11": "TPS"}]
+    "Joni": [{ "1": "HJK"}, {"2": "KuPS"}, { "3": "IFK Mariehamn"}, {"4": "Ilves"},{ "5": "FC Inter"}, {"6": "SJK"},{ "7": "FC Honka"}, {"8": "FC Lahti"}, {"9": "VPS"}, {"10": "TPS"}, {"11": "RoPS"}, {"12": "PS Kemi"}],
+    "Horhe": [{ "1": "HJK"}, {"2": "KuPS"}, { "3": "RoPS"}, {"4": "FC Inter"},{ "5": "Ilves"}, {"6": "SJK"},{ "7": "IFK Mariehamn"}, {"8": "VPS"}, {"9": "FC Lahti"}, {"10": "TPS"}, {"11": "FC Honka"}, {"12": "PS Kemi"}],
+    "Isi": [{ "1": "HJK"}, {"2": "KuPS"}, { "3": "FC Lahti"}, {"4": "SJK"},{ "5": "IFK Mariehamn"}, {"6": "Ilves"},{ "7": "VPS"}, {"8": "Inter"}, {"9": "FC Honka"}, {"10": "PS Kemi"}, {"11": "RoPS"}, {"12": "TPS"}]
 }

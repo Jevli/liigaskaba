@@ -1,7 +1,7 @@
 <template>
-  <div class="contest">
+  <div>
     <v-loader v-if="!gamers.length || !teams.length"/>
-    <table class="contest" v-if="gamers.length && teams.length" border=1>
+    <table class="contest" v-if="gamers.length && teams.length">
       <tr>
         <th>Pelaaja</th>
         <th>Pts</th>
@@ -15,7 +15,6 @@
     </table>
 
     <div class="addGamer" v-if="currentUser">
-      Here will be added adding new player
     </div>
   </div>
 </template>
@@ -58,19 +57,20 @@ export default {
             player: key,
             points: _
               .chain(val)
-              .map(v => this.distanceOfRank(Object.values(v)[0], parseInt(Object.keys(v))))
+              .map(v => this.calculatePoints(Object.values(v)[0], parseInt(Object.keys(v))))
               .reduce((sum, n) => sum + n),
             line: _
               .chain(val)
           }
         )
       })
-      this.gamers = _.orderBy(this.gamers, ['points'])
+      this.gamers = _.orderBy(this.gamers, ['points'], ['desc'])
     }
   },
   methods: {
-    distanceOfRank (team, rank) {
-      return Math.abs(_.findIndex(this.teams, (o) => o.id === team) - rank)
+    calculatePoints (team, rank) {
+      const distance = Math.abs(_.findIndex(this.teams, (o) => o.id === team) - rank) * -1
+      return distance === 0 ? 1 : distance
     }
   },
   filters: {
@@ -92,7 +92,8 @@ export default {
     grid-template-columns: 60px 35px auto;
     align-items: center;
     text-align: left;
-    border: 1px solid black
+    padding: 0.25em;
+    border: 1px solid white
   }
 
   th {
