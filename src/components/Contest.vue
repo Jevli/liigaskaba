@@ -70,6 +70,7 @@ export default {
   methods: {
     calculatePoints (team, rank) {
       const distance = Math.abs(_.findIndex(this.teams, (o) => o.id === team) - rank) * -1
+      console.log(team + ' ' + rank + ' ? ' + _.findIndex(this.teams, (o) => o.id === team) + ' score ' + distance)
       return distance === 0 ? 1 : distance
     }
   },
