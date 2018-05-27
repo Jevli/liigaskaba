@@ -50,7 +50,21 @@ exports.getInstantSeasons = functions.https.onRequest((request, response) => {
   })
 })
 
-exports.getInstantSeasons = functions.https.onRequest((request, response) => {
+exports.getInstantSeasonMatches = functions.https.onRequest((request, response) => {
+  const id = request.body.seasonId
+  if (!id) response.status(300).send('Missing season id.')
+
+  makeInstatQuery(seasonMatchesUrl + id)
+  .then((json) => {
+    response.status(200).send(json)
+  })
+  .catch((err) => {
+    console.error(err)
+    response.status(500).send('Failed to get seasons')
+  })
+})
+
+exports.getInstantMatch = functions.https.onRequest((request, response) => {
   const id = request.body.matchId
   if (!id) respose.status(300).send('Missing match id.')
 
@@ -91,7 +105,7 @@ exports.updateStandings = functions.firestore
 
     return Promise.all([createOrUpdateStandingForTeam(home), createOrUpdateStandingForTeam(away)])
       .then( result => console.info(result))
-  })
+})
 
 const createOrUpdateStandingForTeam = (team) => {
   return new Promise((resolve, reject) => {
