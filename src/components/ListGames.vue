@@ -2,13 +2,33 @@
   <div>
     <v-loader v-if="!games.length" />
     <div class="games container" v-if="games.length">
+      <div class="filters">
+        <div class="filter">
+          Joukkue:
+          <select v-model="filterTeam">
+            <option selected></option>
+            <option  v-for="team in teams" v-bind:key="team">
+              {{team}}
+            </option>
+          </select>
+        </div>
+        <div class="filter">
+          Päivä:
+          <select v-model="filterDate">
+            <option selected></option>
+            <option  v-for="date in dates" v-bind:key="date">
+              {{date}}
+            </option>
+          </select>
+        </div>
+      </div>
       <ul>
         <li class="header">
           <div>Päivä:</div>
           <div>Ottelu:</div>
           <div>Tulos</div>
         </li>
-        <li class="game" v-for="game in games" v-bind:key="game.id" >
+        <li class="game" v-for="game in filtered" v-bind:key="game.id" >
           <div class="date">{{game.date}} {{game.time}}</div>
           <div class="teams">{{game.home}} - {{game.away}}</div>
           <div>
@@ -45,6 +65,7 @@
 <script>
 import Loader from '@/components/helpers/Loader'
 import InputResult from '@/components/helpers/InputResult'
+import _ from 'lodash'
 
 import firebase from 'firebase'
 import {db} from '../firebase'
@@ -56,7 +77,9 @@ export default {
     return {
       changeResult: [],
       games: [],
-      currentUser: firebase.auth().currentUser
+      currentUser: firebase.auth().currentUser,
+      filterTeam: '',
+      filterDate: ''
     }
   },
   components: {
@@ -96,17 +119,6 @@ export default {
         return aTime[0] - bTime[0] + aTime[1] - bTime[1]
       }
     },
-    filterGamesBy (team, place) {
-      this.games = this.games.filter(game => {
-        if (place === 'away') {
-          return game.away === team
-        } else if (place === 'home') {
-          return game.home === team
-        } else {
-          return game.away === team || game.home === team
-        }
-      })
-    },
     addResult (id) {
       if (this.currentUser) this.changeResult.push(id)
     },
@@ -118,6 +130,35 @@ export default {
         console.log(err)
       })
       this.changeResult = this.changeResult.filter(match => match !== id)
+    }
+  },
+  computed: {
+    filtered: function () {
+      return _
+        .chain(this.games)
+        .filter((game) => {
+          return (game.home === this.filterTeam || game.away === this.filterTeam) || !this.filterTeam
+        })
+        .filter((game) => {
+          return game.date === this.filterDate || !this.filterDate
+        })
+        .value()
+    },
+    teams: function () {
+      return _
+        .chain(this.filtered)
+        .map((team) => [team.home, team.away])
+        .flatMap()
+        .uniqBy()
+        .orderBy()
+        .value()
+    },
+    dates: function () {
+      return _
+        .chain(this.filtered)
+        .map('date')
+        .uniqBy()
+        .value()
     }
   }
 }
@@ -163,6 +204,16 @@ export default {
     background-color: black;
     padding: 7.5px;
     font-size: 12px;
+  }
+
+  .filters {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .filter {
+    margin-right: 0.75em;
   }
 
 </style>
