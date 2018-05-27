@@ -110,10 +110,9 @@ export default {
     addResult (id) {
       if (this.currentUser) this.changeResult.push(id)
     },
-    closeMatchEdit (id, result, events) {
+    closeMatchEdit (id, result) {
       gamesDb.doc(id).update({
-        result: result,
-        events: events
+        result: result
       }).catch(err => {
         alert('Tulosta ei tallennettu. Oikeuksissa tai tallentamisessa ongelmia.')
         console.log(err)
@@ -148,7 +147,7 @@ export default {
   .game {
     display: flex;
     flex-flow: row wrap;
-    margin-top: 0.5em;
+    margin-top: 1em;
   }
 
   .game > .date {
@@ -161,8 +160,8 @@ export default {
 
   .addResult {
     border-radius: 7.5px;
-    background-color: lightblue;
-    padding: 5px;
+    background-color: black;
+    padding: 7.5px;
     font-size: 12px;
   }
 

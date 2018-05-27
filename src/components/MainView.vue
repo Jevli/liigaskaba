@@ -93,7 +93,7 @@ export default {
     min-width: 400px;
     max-width: 50vw;
     margin: 0 auto;
-    color: black;
+    color: lightblue;
     font-weight: bold;
   }
 
