@@ -16,12 +16,16 @@
       <div class="tab contest" @click="updateState('contest')" v-if="currentUser">
         Potkupalloveikkaus
       </div>
+      <div class="tab contest" @click="updateState('stats')" v-if="currentUser">
+        Tilastot
+      </div>
     </div>
     <div class="content">
       <v-list-games v-if="state === 'list' && !login" />
       <v-standing v-if="state === 'standing' && !login" />
       <v-contest v-if="state === 'contest' && !login" />
       <v-login v-if="login" v-on:signIn="signIn($event)" v-on:closeLogin="login = false" />
+      <v-playerstats v-if="state == 'stats' && !login" />
     </div>
   </div>
 </template>
@@ -33,6 +37,7 @@ import ListGames from '@/components/ListGames'
 import Standing from '@/components/Standing'
 import Contest from '@/components/Contest'
 import Login from '@/components/helpers/Login'
+import PlayerStats from '@/components/PlayerStats'
 
 export default {
   name: 'MainView',
@@ -40,7 +45,8 @@ export default {
     'v-list-games': ListGames,
     'v-standing': Standing,
     'v-contest': Contest,
-    'v-login': Login
+    'v-login': Login,
+    'v-playerstats': PlayerStats
   },
   data: () => {
     return {
@@ -88,8 +94,8 @@ export default {
 <style scoped>
   .mainview {
     display: grid;
-    grid-template-rows: 1em 4em auto;
-    grid-row-gap: 1em;
+    grid-template-rows: 1em 5em auto;
+    grid-row-gap: 3em;
     min-width: 400px;
     max-width: 50vw;
     margin: 0 auto;
